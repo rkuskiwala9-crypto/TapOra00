@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>TapOPORA Studio OS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,-apple-system,sans-serif;background:#09090b;color:#fafafa;padding-bottom:60px;font-size:13px}
+.mono{font-family:monospace}header{position:sticky;top:0;z-index:20;background:#09090bee;border-bottom:1px solid #27272a;padding:11px 14px}
+.wrap{max-width:900px;margin:0 auto}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+button{cursor:pointer;border:1px solid transparent;border-radius:8px;font-size:12px;font-weight:600;padding:7px 11px}
+.bw{background:#fff;color:#09090b}.bd{background:#18181b;color:#e4e4e7;border-color:#27272a}
+.br{background:#3f151e;color:#fda4af;border-color:#7f1d1d}.bg{background:#064e3b;color:#6ee7b7;border-color:#065f46;font-size:11px;padding:5px 9px}
+main{padding:14px;display:flex;flex-direction:column;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}@media(min-width:700px){.g4{grid-template-columns:repeat(4,1fr)}}
+.card{background:#121216;border:1px solid #27272a;border-radius:13px;padding:12px}
+.mut{color:#a1a1aa;font-size:11px}.val{font-size:20px;font-weight:700;margin:3px 0}
+.tabs{display:flex;gap:4px;background:#121216;border:1px solid #27272a;padding:4px;border-radius:10px}
+.tab{flex:1;background:transparent;color:#a1a1aa;padding:7px}.tab.on{background:#27272a;color:#fff}
+input,select{width:100%;background:#09090b;border:1px solid #27272a;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;outline:none}
+.lbox{background:#09090b;border:1px solid #27272a;border-radius:9px;padding:8px;margin-top:8px}
+.mb{background:#09090b;color:#a1a1aa;border:1px solid #27272a;font-size:11px;padding:5px 8px}.mb.on{background:#6366f1;color:#fff;border-color:#6366f1}
+.bar{height:5px;background:#27272a;border-radius:99px;overflow:hidden;margin-top:4px}.fill{height:100%;background:#6366f1}.fill.w{background:#f59e0b}
+.al{background:#271a06;border:1px solid #78350f;border-radius:11px;padding:10px}
+.mod{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:14px;z-index:50}
+.mbox{background:#18181b;border:1px solid #3f3f46;border-radius:14px;padding:15px;width:100%;max-width:420px;max-height:88vh;overflow-y:auto;display:flex;flex-direction:column;gap:9px}
+.tst{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#27272a;color:#fff;padding:7px 14px;border-radius:99px;font-size:12px;z-index:60;border:1px solid #52525b}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function(){
+var CK='tap_c_v4',SK='tap_s_v4',DS={batch:10,cost:160,setup:800,renew:549,extra:99,free:6,dom:'https://tapopora.in/c/'};
+var MD={instagram:'Instagram',google_review:'Google Review',whatsapp:'WhatsApp',choice_hub:'Choice Hub'};
+function addD(n){var d=new Date();d.setDate(d.getDate()+n);return d.toISOString().split('T')[0]}
+function dLeft(e){if(!e)return 0;var a=new Date();a.setHours(0,0,0,0);var b=new Date(e);b.setHours(0,0,0,0);return Math.ceil((b-a)/864e5)}
+function slg(t){return String(t||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'card'}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+var st={c:[],s:Object.assign({},DS),tab:'clients',q:'',mod:0,eid:null,qid:null,sid:'',tst:'',fm:'instagram'};
+try{var a=localStorage.getItem(CK);if(a)st.c=JSON.parse(a);var b=localStorage.getItem(SK);if(b)st.s=Object.assign({},DS,JSON.parse(b))}catch(e){}
+function sv(){try{localStorage.setItem(CK,JSON.stringify(st.c));localStorage.setItem(SK,JSON.stringify(st.s))}catch(e){}}
+function nt(m){st.tst=m;rn();setTimeout(function(){st.tst='';rn()},2000)}
+function dst(c,m){var l=c.links||{};if(m==='instagram')return l.ig||c.dest||c.nfc;if(m==='google_review')return l.gr||c.dest||c.nfc;if(m==='whatsapp')return l.wa||c.dest||c.nfc;return c.nfc+'?mode=choice'}
+window.T={
+tab:function(t){st.tab=t;rn()},q:function(v){st.q=v;rn()},
+demo:function(){st.c=[
+{id:'NFC-01',name:'Brewberrys Artisan Cafe',cat:'Cafe',area:'Sindhu Bhavan Road',owner:'Rohan Patel',ph:'9825011223',plan:'Active Paid',sale:800,rf:549,rc:0,ec:0,er:0,exp:addD(23),nfc:'https://tapopora.in/c/brewberrys-sbr',mode:'instagram',dest:'https://instagram.com/brewberrys_sbr',links:{ig:'https://instagram.com/brewberrys_sbr',gr:'https://g.page/r/brewberrys-sbr/review',wa:'https://wa.me/919825011223'},used:2,max:6},
+{id:'NFC-02',name:'Tadka & Toast Bistro',cat:'Restaurant',area:'Thaltej',owner:'Mehul Shah',ph:'9898044556',plan:'Active Paid',sale:800,rf:549,rc:0,ec:1,er:99,exp:addD(5),nfc:'https://tapopora.in/c/tadka-toast',mode:'google_review',dest:'https://g.page/r/tadka-toast/review',links:{ig:'https://instagram.com/tadkatoast',gr:'https://g.page/r/tadka-toast/review',wa:'https://wa.me/919898044556'},used:6,max:6},
+{id:'NFC-03',name:'Royal Sarkhej Darbar',cat:'Hotel',area:'Sarkhej',owner:'Imran Pathan',ph:'9727088990',plan:'7-Day Free Trial',sale:0,rf:549,rc:0,ec:0,er:0,exp:addD(2),nfc:'https://tapopora.in/c/royal-sarkhej',mode:'choice_hub',dest:'https://tapopora.in/c/royal-sarkhej?mode=choice',links:{ig:'https://instagram.com/royalsarkhej',gr:'https://g.page/r/royal-sarkhej/review',wa:'https://wa.me/919727088990'},used:1,max:6}
+];sv();nt('Loaded 3 demo clients')},
+rst:function(){if(confirm('Reset all clients to 0?')){st.c=[];sv();nt('Reset to 0 clients')}},
+add:function(){st.eid=null;st.fm='instagram';st.mod=1;rn()},
+edt:function(id){var c=st.c.find(function(x){return x.id===id});if(c){st.eid=id;st.fm=c.mode;st.mod=1;rn()}},
+cls:function(){st.mod=0;rn()},fm:function(m){st.fm=m;rn()},
+sav:function(e){e.preventDefault();var nm=document.getElementById('fn').value.trim();if(!nm)return;
+var cat=document.getElementById('fc').value,ar=document.getElementById('fa').value.trim()||'Ahmedabad',ow=document.getElementById('fo').value.trim()||'Owner',ph=document.getElementById('fp').value.replace(/\D/g,''),pl=document.getElementById('fpl').value;
+var dm=st.s.dom.endsWith('/')?st.s.dom:st.s.dom+'/',nfc=document.getElementById('fnfc').value.trim()||(dm+slg(nm));
+var ig=document.getElementById('fig').value.trim(),gr=document.getElementById('fgr').value.trim(),wa=ph?'https://wa.me/'+(ph.startsWith('91')?ph:'91'+ph):'';
+var lk={ig:ig,gr:gr,wa:wa};
+if(st.eid){st.c=st.c.map(function(c){if(c.id!==st.eid)return c;var x=Object.assign({},c,{name:nm,cat:cat,area:ar,owner:ow,ph:ph,plan:pl,nfc:nfc,mode:st.fm,links:lk});x.dest=dst(x,st.fm);return x});nt('Updated')}
+else{var tr=pl==='7-Day Free Trial',it={id:'NFC-'+String(st.c.length+1).padStart(2,'0'),name:nm,cat:cat,area:ar,owner:ow,ph:ph,plan:pl,sale:tr?0:+st.s.setup,rf:+st.s.renew,rc:0,ec:0,er:0,exp:addD(tr?7:365),nfc:nfc,mode:st.fm,links:lk,used:0,max:+st.s.free};it.dest=dst(it,st.fm);st.c.unshift(it);nt(nm+' added')}
+st.mod=0;sv();rn()},
+del:function(id){if(confirm('Remove client?')){st.c=st.c.filter(function(c){return c.id!==id});sv();nt('Removed')}},
+md:function(id,m){st.c=st.c.map(function(c){if(c.id!==id||c.mode===m)return c;var u=(c.used||0)+1,ex=u>(c.max||st.s.free);nt(ex?'Switched (+₹'+st.s.extra+')':'Switched ('+u+'/'+c.max+')');return Object.assign({},c,{mode:m,dest:dst(c,m),used:u,ec:ex?(c.ec||0)+1:(c.ec||0),er:ex?(c.er||0)+(+st.s.extra):(c.er||0)})});sv();rn()},
+du:function(id,v){var u=String(v||'').trim();if(!u)return;st.c=st.c.map(function(c){if(c.id!==id||c.dest===u)return c;var n=(c.used||0)+1,ex=n>(c.max||st.s.free);return Object.assign({},c,{dest:u,used:n,ec:ex?(c.ec||0)+1:(c.ec||0),er:ex?(c.er||0)+(+st.s.extra):(c.er||0)})});sv();nt('Link updated')},
+ren:function(id){st.c=st.c.map(function(c){if(c.id!==id)return c;if(c.plan==='7-Day Free Trial'){nt('Converted (+₹'+st.s.setup+')');return Object.assign({},c,{plan:'Active Paid',sale:+st.s.setup,exp:addD(365),used:0})}nt('Renewed (+₹'+c.rf+')');return Object.assign({},c,{rc:(c.rc||0)+1,exp:addD(365),used:0})});sv();rn()},
+cp:function(id){var c=st.c.find(function(x){return x.id===id});if(c&&navigator.clipboard)navigator.clipboard.writeText(c.nfc);nt('NFC link copied')},
+rm:function(id){var c=st.c.find(function(x){return x.id===id});if(!c||!c.ph)return nt('No phone');var p=c.ph.startsWith('91')?c.ph:'91'+c.ph;window.open('https://wa.me/'+p+'?text='+encodeURIComponent('Hi '+c.owner+', reminder from TapOPORA: your NFC Card ('+c.nfc+') is due for renewal at ₹'+c.rf+'/yr.'),'_blank')},
+qr:function(id){st.qid=id;rn()},cqr:function(){st.qid=null;rn()},sim:function(id){st.sid=id;rn()},
+svl:function(k,v){st.s[k]=k==='dom'?v:(+v||0);sv();rn()}
+};
+function rn(){
+var s=st.s,L=st.c,pd=L.filter(function(c){return c.plan==='Active Paid'}).length;
+var rev=L.reduce(function(a,c){return a+(+c.sale||0)+(+c.rc||0)*(+c.rf||s.renew)+(+c.er||0)},0);
+var cg=L.length*(+s.cost||160),pf=rev-cg,lf=Math.max(0,(+s.batch||10)-L.length);
+var al=L.filter(function(c){var d=dLeft(c.exp);return(c.plan==='7-Day Free Trial'&&d<=3)||(c.plan==='Active Paid'&&d<=30)});
+var q=st.q.toLowerCase().trim(),fl=L.filter(function(c){return!q||c.name.toLowerCase().includes(q)||c.owner.toLowerCase().includes(q)||c.area.toLowerCase().includes(q)});
+var h='<header><div class="wrap row"><div class="row"><div class="logo">T</div><div><strong>TapOPORA <span class="mono mut">OS</span></strong><div class="mut">NFC Dynamic CRM</div></div></div><div class="row">'+(L.length?'<button class="br" onclick="T.rst()">Reset to 0</button>':'<button class="bd" onclick="T.demo()">Load Demo (3)</button>')+'<button class="bw" onclick="T.add()">+ Add Client</button></div></div></header><main class="wrap">';
+if(al.length)h+='<div class="al"><strong style="color:#fcd34d;font-size:12px">Alerts ('+al.length+')</strong>'+al.map(function(c){return'<div class="row" style="background:#09090b;padding:7px 9px;border-radius:8px;margin-top:5px"><div><strong>'+esc(c.name)+'</strong> <span style="color:#fcd34d;font-size:11px">('+dLeft(c.exp)+'d)</span></div><button class="bg" onclick="T.rm(\''+c.id+'\')">Remind</button></div>'}).join('')+'</div>';
+h+='<div class="g4"><div class="card"><div class="mut">Clients</div><div class="val">'+L.length+'</div><div class="mut">'+pd+' Paid · '+(L.length-pd)+' Trial</div></div><div class="card"><div class="mut">Revenue</div><div class="val">₹'+rev+'</div><div class="mut">Setup + Renewals</div></div><div class="card"><div class="mut">Net Profit</div><div class="val" style="color:'+(pf>=0?'#34d399':'#fb7185')+'">₹'+pf+'</div><div class="mut">COGS ₹'+cg+'</div></div><div class="card"><div class="mut">Card Stock</div><div class="val">'+lf+'/'+s.batch+'</div><div class="mut">Cards left</div></div></div>';
+h+='<div class="tabs"><button class="tab '+(st.tab==='clients'?'on':'')+'" onclick="T.tab(\'clients\')">Clients ('+L.length+')</button><button class="tab '+(st.tab==='sim'?'on':'')+'" onclick="T.tab(\'sim\')">Simulator</button><button class="tab '+(st.tab==='set'?'on':'')+'" onclick="T.tab(\'set\')">Settings</button></div>';
+if(st.tab==='clients'){
+h+='<input placeholder="Search client, owner, area..." value="'+esc(st.q)+'" oninput="T.q(this.value)">';
+if(!L.length)h+='<div class="card" style="text-align:center;padding:24px"><strong>0 Clients Added</strong><div class="mut" style="margin:6px 0 12px">Add your first TapOPORA client or load demo data.</div><button class="bw" onclick="T.add()">+ Add Client</button> <button class="bd" onclick="T.demo()">Load Demo (3)</button></div>';
+else h+=fl.map(function(c){var pct=Math.min(100,Math.round(((c.used||0)/(c.max||6))*100)),wn=(c.used||0)>=(c.max||6);
+return'<div class="card"><div class="row"><div><span class="mono mut">'+c.id+'</span> <strong>'+esc(c.name)+'</strong> <span style="font-size:10px;padding:2px 6px;border-radius:99px;background:'+(c.plan==='Active Paid'?'#064e3b;color:#6ee7b7':'#451a03;color:#fcd34d')+'">'+esc(c.plan)+'</span><div class="mut">'+esc(c.cat)+' · '+esc(c.area)+' · '+esc(c.owner)+'</div></div><div class="row"><button class="bd" onclick="T.qr(\''+c.id+'\')">QR</button><button class="bd" onclick="T.edt(\''+c.id+'\')">Edit</button><button class="br" onclick="T.del(\''+c.id+'\')">Del</button></div></div>'+
+'<div class="lbox"><div class="row"><span class="mut">1. Main NFC Link (Static)</span><button class="bd" style="padding:2px 7px;font-size:11px" onclick="T.cp(\''+c.id+'\')">Copy</button></div><div class="mono" style="color:#a5b4fc;margin-top:3px;word-break:break-all">'+esc(c.nfc)+'</div></div>'+
+'<div class="lbox"><div class="row"><span class="mut">2. Dynamic Destination</span><span style="color:#34d399;font-size:11px">'+MD[c.mode]+'</span></div><div class="row" style="margin-top:4px;flex-wrap:nowrap"><input class="mono" style="color:#6ee7b7" value="'+esc(c.dest)+'" onblur="T.du(\''+c.id+'\',this.value)"><a href="'+esc(c.dest)+'" target="_blank" style="color:#a1a1aa;text-decoration:none;padding:4px">Open</a></div></div>'+
+'<div class="row" style="margin-top:8px;justify-content:flex-start">'+Object.keys(MD).map(function(m){return'<button class="mb '+(c.mode===m?'on':'')+'" onclick="T.md(\''+c.id+'\',\''+m+'\')">'+MD[m]+'</button>'}).join('')+'</div>'+
+'<div class="row" style="margin-top:9px;padding-top:8px;border-top:1px solid #27272a"><div style="flex:1;min-width:120px;max-width:180px"><div class="mut">'+(c.used||0)+'/'+(c.max||6)+' Free Edits'+(c.ec?' (+'+c.ec+' paid)':'')+'</div><div class="bar"><div class="fill '+(wn?'w':'')+'" style="width:'+pct+'%"></div></div></div><div class="row"><span class="mut">'+dLeft(c.exp)+'d left</span><button class="bg" onclick="T.ren(\''+c.id+'\')">'+(c.plan==='7-Day Free Trial'?'Convert ₹'+s.setup:'Renew ₹'+c.rf)+'</button></div></div></div>'}).join('')}
+if(st.tab==='sim'){
+if(!L.length)h+='<div class="card" style="text-align:center">Add a client first to test NFC tap.</div>';
+else{var sm=L.find(function(c){return c.id===st.sid})||L[0];
+h+='<div class="card" style="display:flex;flex-direction:column;gap:10px"><select onchange="T.sim(this.value)">'+L.map(function(c){return'<option value="'+c.id+'" '+(c.id===sm.id?'selected':'')+'>'+esc(c.name)+'</option>'}).join('')+'</select><div style="max-width:270px;margin:0 auto;width:100%;background:#09090b;border:2px solid #3f3f46;border-radius:20px;padding:14px;text-align:center"><div class="mono" style="font-size:10px;color:#818cf8">NFC TAG SCANNED</div><div style="font-weight:700;margin:4px 0">'+esc(sm.name)+'</div><div class="mono mut" style="word-break:break-all">'+esc(sm.nfc)+'</div><div class="lbox"><div class="mut">Redirects To:</div><div class="mono" style="color:#34d399;word-break:break-all;margin-top:3px">'+esc(sm.dest)+'</div></div><a href="'+esc(sm.dest)+'" target="_blank" style="display:inline-block;margin-top:10px;background:#fff;color:#09090b;text-decoration:none;font-weight:600;padding:7px 12px;border-radius:8px">Test Live Link</a></div></div>'}}
+if(st.tab==='set'){
+h+='<div class="card" style="display:flex;flex-direction:column;gap:8px"><div class="row"><strong>TapOPORA Settings</strong><button class="br" onclick="T.rst()">Reset to 0</button></div>'+
+'<div class="mut">Batch Stock</div><input type="number" value="'+s.batch+'" onchange="T.svl(\'batch\',this.value)">'+
+'<div class="mut">Card COGS (₹)</div><input type="number" value="'+s.cost+'" onchange="T.svl(\'cost\',this.value)">'+
+'<div class="mut">Setup Fee (₹)</div><input type="number" value="'+s.setup+'" onchange="T.svl(\'setup\',this.value)">'+
+'<div class="mut">Renewal Fee (₹)</div><input type="number" value="'+s.renew+'" onchange="T.svl(\'renew\',this.value)">'+
+'<div class="mut">Free Edits/Yr</div><input type="number" value="'+s.free+'" onchange="T.svl(\'free\',this.value)">'+
+'<div class="mut">Base Domain</div><input class="mono" value="'+esc(s.dom)+'" onchange="T.svl(\'dom\',this.value)"></div>'}
+h+='</main>';
+if(st.mod){var ec=st.eid?L.find(function(x){return x.id===st.eid}):null,dm=s.dom.endsWith('/')?s.dom:s.dom+'/';
+h+='<div class="mod"><form class="mbox" onsubmit="T.sav(event)"><div class="row"><strong>'+(ec?'Edit Client':'Add Client')+'</strong><button type="button" class="bd" onclick="T.cls()">X</button></div>'+
+'<input id="fn" required placeholder="Business Name *" value="'+esc(ec?ec.name:'')+'">'+
+'<select id="fc"><option>Cafe</option><option>Restaurant</option><option>Hotel</option><option>Salon</option><option>Retail</option></select>'+
+'<input id="fa" placeholder="Area" value="'+esc(ec?ec.area:'Sindhu Bhavan Road')+'">'+
+'<input id="fo" placeholder="Owner Name" value="'+esc(ec?ec.owner:'')+'">'+
+'<input id="fp" type="tel" placeholder="WhatsApp Number" value="'+esc(ec?ec.ph:'')+'">'+
+'<select id="fpl"><option value="Active Paid" '+(ec&&ec.plan==='Active Paid'?'selected':'')+'>Active Paid (₹'+s.setup+')</option><option value="7-Day Free Trial" '+(ec&&ec.plan==='7-Day Free Trial'?'selected':'')+'>7-Day Free Trial (₹0)</option></select>'+
+'<input id="fnfc" class="mono" placeholder="Main NFC URL" value="'+esc(ec?ec.nfc:dm+'client-'+String(L.length+1).padStart(2,'0'))+'">'+
+'<div class="row">'+Object.keys(MD).map(function(m){return'<button type="button" class="mb '+(st.fm===m?'on':'')+'" onclick="T.fm(\''+m+'\')">'+MD[m]+'</button>'}).join('')+'</div>'+
+'<input id="fig" placeholder="Instagram URL" value="'+esc(ec&&ec.links?ec.links.ig:'')+'">'+
+'<input id="fgr" placeholder="Google Review URL" value="'+esc(ec&&ec.links?ec.links.gr:'')+'">'+
+'<div class="row" style="justify-content:flex-end"><button type="button" class="bd" onclick="T.cls()">Cancel</button><button type="submit" class="bw">Save</button></div></form></div>'}
+if(st.qid){var qc=L.find(function(x){return x.id===st.qid});if(qc)h+='<div class="mod"><div class="mbox" style="text-align:center"><div class="row"><span class="mono mut">'+qc.id+'</span><button class="bd" onclick="T.cqr()">X</button></div><strong>'+esc(qc.name)+'</strong><div class="mono" style="color:#a5b4fc;background:#09090b;padding:9px;border-radius:8px;word-break:break-all">'+esc(qc.nfc)+'</div><button class="bw" onclick="T.cp(\''+qc.id+'\')">Copy NFC Link</button></div></div>'}
+if(st.tst)h+='<div class="tst">'+esc(st.tst)+'</div>';
+document.getElementById('app').innerHTML=h}
+rn()})();
+</script>
+</body>
+</html>
+<!-- END -->
